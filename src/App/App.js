@@ -8,6 +8,7 @@ import NotePageMain from '../NotePageMain/NotePageMain';
 import dummyStore from '../dummy-store';
 import {getNotesForFolder, findNote, findFolder} from '../notes-helpers';
 import './App.css';
+import NotefulContext from '../NotefulContext.js'
 
 class App extends Component {
     state = {
@@ -15,6 +16,23 @@ class App extends Component {
         folders: []
     };
 
+    addFolder = folder => {
+        this.setState({
+           folders: [...this.state.folders, folder], 
+        })
+    }
+
+    addNote = note => {
+        this.setState({
+            notes: [...this.state.notes, note],
+        })
+    }
+    
+    deleteNote = noteId => {
+        this.setState({
+            notes: [...this.state.notes.filter()]
+        })
+    }
     componentDidMount() {
         // fake date loading from API call
         setTimeout(() => this.setState(dummyStore), 600);
@@ -90,7 +108,14 @@ class App extends Component {
     }
 
     render() {
+        const contextValue ={
+            notes: this.state.notes,
+            folders: this.state.folders,
+
+
+        }
         return (
+            <NotefulContext.Provider>
             <div className="App">
                 <nav className="App__nav">{this.renderNavRoutes()}</nav>
                 <header className="App__header">
@@ -101,6 +126,7 @@ class App extends Component {
                 </header>
                 <main className="App__main">{this.renderMainRoutes()}</main>
             </div>
+            </NotefulContext.Provider>
         );
     }
 }
